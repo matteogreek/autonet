@@ -2,9 +2,11 @@ from tkinter import *
 from dataclasses import dataclass
 from typing import List
 
-host_list = []
+
 switch_list = []
 router_list = []
+host_list = []
+
 
 @dataclass
 class Host:
@@ -12,6 +14,13 @@ class Host:
     ip: str
     mask: str
     gateway: str
+
+    def __init__(self, name, ip, mask, gateway):
+        self.name = name
+        self.ip = ip
+        self.mask = mask
+        self.gateway = gateway
+
 # p = Point(1.5, 2.5)
 # print(p)  # Point(x=1.5, y=2.5, z=0.0)
 
@@ -19,8 +28,10 @@ class Host:
 @dataclass
 class Router:
     name: str
-    ip = {}
-    route: str
+    ip_mask = {}
+
+    def __init__(self, name):
+        self.name = name
 
 
 @dataclass
@@ -31,12 +42,11 @@ class Switch:
         self.name = name
 
 
-
 root = Tk()
 root.title("AutoNet")
 root.geometry("200x200")
 
-
+# serviranno in futuro, da rivedere
 def new_host(name, ip, mask, gate):
     h = Host(name, ip, mask, gate)
     host_list.append(h)
@@ -45,15 +55,14 @@ def new_host(name, ip, mask, gate):
 def new_switch(name):
     s = Switch(name)
     switch_list.append(s)
-    for i in switch_list:
-        print(i)
 
 
-def new_router(name, ip, route):
-    r = Router(name, ip, route)
+def new_router(name, ip):
+    r = Router(name, ip)
     host_list.append(r)
+###############################################
 
-
+# serviranno in futuro, da rivedere
 def write_switch_file(sname):
     f = open(sname + ".sh", "w")
     f.write("prova")
@@ -70,7 +79,7 @@ def write_router_file(sname):
     f = open(sname + ".sh", "w")
     f.write("prova")
     f.close()
-
+###############################################
 
 def add_device():
     window = Toplevel(root)
@@ -172,8 +181,8 @@ def add_device():
 
 
 btn_add = Button(root, text="Add Device", width=25, command=add_device)
-btn_add.grid(row=0, column=0)
+btn_add.pack()
 btn_link = Button(root, text="Create Link", width=25, command=add_device)
-btn_link.grid(row=1, column=0)
+btn_link.pack()
 
 root.mainloop()
