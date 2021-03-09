@@ -213,15 +213,23 @@ def add_combo(lista, combo):
     for i in lista:
         combo['values'] += (i.name,)
 
+def findName(name, lista):
+    for i in lista:
+        if i.name == name:
+           #i.link = "enp0s8"
+            print("trovato")
+
 def chosingVar(varHost, varSwitch, varRouter):
-    H = varHost.get()
-    S = varSwitch.get()
-    R = varRouter.get()
+    h = varHost.get()
+    s = varSwitch.get()
+    r = varRouter.get()
 
+    findName(h, host_list)
+    findName(s, switch_list)
+    findName(r, router_list)
 
-
-    print("host "+H)
-    print("switch "+S)
+    print("host " + h)
+    print("switch " + r)
 
 
 def add_link():
