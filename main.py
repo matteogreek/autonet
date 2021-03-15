@@ -7,29 +7,20 @@ host_list = []
 switch_list = []
 router_list = []
 
+device_list = []
+
 @dataclass
 class Host:
-    name: str
-    ip: str
-    mask: str
-    gateway: str
+    def __init__(self, name, ip, mask, gateway):
+        self.name = name
+        self.ip = ip
+        self.mask = mask
+        self.gateway = gateway
+        self.link = []
 
     def __str__(self):
         return self.name
 
-'''
-    link: str #dovrebbe essere una lista
-
-    def __init__(self, name, ip, mask, gateway, link=None):
-        self.name = name
-        self.name = ip
-        self.name = mask
-        self.name = gateway
-        self.link = link
-        
- p = Point(1.5, 2.5)
- print(p)  # Point(x=1.5, y=2.5, z=0.0)
-'''
 
 @dataclass
 class Router:
@@ -37,21 +28,22 @@ class Router:
     ip = {}
     route: str
 
-    def __str__(self):
-        return self.name
+
+    #def __str__(self):
+       # return self.name
 
 
 @dataclass
 class Switch:
-    name: str
-    link: str
 
-    def __init__(self, name, link=None):
+    def __init__(self, name):
         self.name = name
-        self.link = link
+        self.link = []
+
 
     def __str__(self):
         return self.name
+
 
 
 root = Tk()
@@ -60,27 +52,30 @@ root.geometry("200x200")
 
 
 def new_host(name, ip, mask, gate):
+
     h = Host(name, ip, mask, gate)
-    for i in host_list:
+
+    trovato = False
+    for i in device_list:
         if name == i.name or ip == i.ip:
             print("esiste già")
-            return 0
-    host_list.append(h)
+            trovato = True
+    if not trovato:
+        device_list.append(h)
 
-    for i in host_list:
-        print(i)
 
 
 def new_switch(name):
     s = Switch(name)
-    for i in switch_list:
+
+    trovato = False
+    for i in device_list:
         if name == i.name:
             print("esiste già")
-            return 0
-    switch_list.append(s)
+            trovato = True
+    if not trovato:
+        device_list.append(s)
 
-    for i in switch_list:
-        print(i)
 
 
 def new_router(name, ip, route):
@@ -216,20 +211,27 @@ def add_combo(lista, combo):
 def findName(name, lista):
     for i in lista:
         if i.name == name:
-           #i.link = "enp0s8"
+
             print("trovato")
 
-def chosingVar(varHost, varSwitch, varRouter):
-    h = varHost.get()
-    s = varSwitch.get()
-    r = varRouter.get()
 
-    findName(h, host_list)
-    findName(s, switch_list)
-    findName(r, router_list)
+def chosingVar(first, second):
+    h = first.get()
+    s = second.get()
 
-    print("host " + h)
-    print("switch " + r)
+    for i in device_list:
+        if i.name == h or i.name == s:
+            i.link.append("broadcast_"+h)
+            print("ciao a tutti ")
+            print("link di "+i.name+" = ")
+            print(i.link)
+
+
+
+
+
+
+
 
 
 def add_link():
@@ -246,26 +248,19 @@ def add_link():
     lbl = Label(window, width=25, text="Select 2 devices to create link")
     lbl.grid(row=0, column=0)
 
-    lbl_host = Label(window, width=25, text="Select host")
-    lbl_host.grid(row=1, column=0, padx=(5, 5))
-    host = StringVar()
-    combobox_host = ttk.Combobox(window, width=15, textvariable=host, value=host_list)
-    combobox_host.grid(row=2, column=0, padx=(5, 5))
+    lbl_first = Label(window, width=25, text="Select first device")
+    lbl_first.grid(row=1, column=0, padx=(5, 5))
+    first = StringVar()
+    combobox_first = ttk.Combobox(window, width=15, textvariable=first, value=device_list)
+    combobox_first.grid(row=2, column=0, padx=(5, 5))
 
-    lbl_switch = Label(window, width=25, text="Select switch")
-    lbl_switch.grid(row=1, column=1, padx=(5, 5))
-    switch = StringVar()
-    combobox_switch = ttk.Combobox(window, width=15, textvariable=switch, value=switch_list)
-    combobox_switch.grid(row=2, column=1, padx=(5, 5))
+    lbl_second = Label(window, width=25, text="Select second device")
+    lbl_second.grid(row=1, column=1, padx=(5, 5))
+    second = StringVar()
+    combobox_second = ttk.Combobox(window, width=15, textvariable=second, value=device_list)
+    combobox_second.grid(row=2, column=1, padx=(5, 5))
 
-    lbl_router = Label(window, width=25, text="Select router")
-    lbl_router.grid(row=1, column=2, padx=(5, 5))
-    router = StringVar()
-    combobox_router = ttk.Combobox(window, width=15, textvariable=router)
-    add_combo(router_list, combobox_router)
-    combobox_router.grid(row=2, column=2, padx=(5, 5))
-
-    btn_linking = Button(window, text="Create link", width=10, command=lambda: chosingVar(host, switch, router))
+    btn_linking = Button(window, text="Create link", width=10, command=lambda: chosingVar(first, second))
     btn_linking.grid(row=3, column=2, sticky='se')
 
     '''
@@ -276,21 +271,23 @@ def add_link():
     '''
 
 
-
-
-
-
-
     def clear_frame(frame):
         for widget in frame.winfo_children():
             widget.destroy()
 
-
     window.mainloop()
+
+
+def create_net():
+    #CREARE I FILE SH E IL VAGRANTFILE
+    print("ciao")
+
 
 btn_add = Button(root, text="Add Device", width=25, command=add_device)
 btn_add.pack()
 btn_link_form = Button(root, text="Create Link", width=25, command=add_link)
 btn_link_form.pack()
+btn_create = Button(root, text="Create & Run", width=25, command=create_net)
+btn_create.pack()
 
 root.mainloop()
