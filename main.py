@@ -77,22 +77,68 @@ def new_switch(name):
         device_list.append(s)
 
 
-
-def new_router(name, ip, route):
-    r = Router(name, ip, route)
-    host_list.append(r)
+def mask_in_slash(netmask):
+    return sum(bin(int(x)).count('1') for x in netmask.split('.'))
 
 
-def write_switch_file(sname):
-    f = open(sname + ".sh", "w")
-    f.write("prova")
+def write_sh():
+    '''
+    The syntax of isinstance() is:
+
+    isinstance(object, classinfo)
+    isinstance() Parameters
+    isinstance() takes two parameters:
+
+    object - object to be checked
+    classinfo - class, type, or tuple of classes and types
+    '''
+
+    for x in device_list:
+        if hasattr(x,'ip'):
+            f = open(x.name + ".sh", "w")
+            f.write("export DEBIAN_FRONTEND=noninteractive\n"
+                    "sudo apt install -y curl\n"
+                    "sudo ip addr add " + x.ip + "/" + str(mask_in_slash(x.mask)) + " dev enp0s8\n"
+                    "sudo ip link set enp0s8 up\n"
+                    "sudo ip route add default via "+x.gateway)
+            f.close()
+        else:
+            f = open(x.name + ".sh", "w")
+            f.write("export DEBIAN_FRONTEND=noninteractive\n"
+                    "apt-get update\n"
+                    "apt-get install -y openvswitch-common openvswitch-switch apt-transport-https ca-certificates curl software-properties-common\n"
+                    "sudo ovs-vsctl add-br switch\n")
+
+            for l in range(8, 8+len(x.link)):
+                f.write("sudo ovs-vsctl add-port switch enp0s" + str(l) + "\n")
+                f.write("sudo ip link set enp0s" + str(l) + " up\n")
+
+            f.close()
+
+
+def write_vagrant():
+    f = open("Vagrantfile", "w")
+    f.write("#-*- mode: ruby -*-\n"
+            "# vi: set ft=ruby :\n"
+            "\n"
+            "# All Vagrant configuration is done below. The \"2\" in Vagrant.configure\n"
+            "# configures the configuration version (we support older styles for\n"
+            "# backwards compatibility). Please don't change it unless you know what\n"
+            "# you're doing.\n"
+            "Vagrant.configure(\"2\") do |config|\n"
+            "  config.vm.box_check_update = false\n"
+            "  config.vm.provider \"virtualbox\" do |vb|\n"
+            "    vb.customize [\"modifyvm\", :id, \"--usb\", \"on\"]\n"
+            "    vb.customize [\"modifyvm\", :id, \"--usbehci\", \"off\"]\n"
+            "    vb.customize [\"modifyvm\", :id, \"--nicpromisc2\", \"allow-all\"]\n"
+            "    vb.customize [\"modifyvm\", :id, \"--nicpromisc3\", \"allow-all\"]\n"
+            "    vb.customize [\"modifyvm\", :id, \"--nicpromisc4\", \"allow-all\"]\n"
+            "    vb.customize [\"modifyvm\", :id, \"--nicpromisc5\", \"allow-all\"]\n"
+            "    vb.cpus = 1\n"
+            "  end\n")
     f.close()
 
 
-def write_host_file(sname):
-    f = open(sname + ".sh", "w")
-    f.write("prova")
-    f.close()
 
 
 def write_router_file(sname):
@@ -185,7 +231,7 @@ def add_device():
             en_router_route = Entry(frame_add, width=20)
             en_router_route.grid(row=7, column=1)
 
-            btn_save = Button(frame_add, text="Save", width=25, command=write_switch_file(en_router_route.get()))
+            btn_save = Button(frame_add, text="Save", width=25)
             btn_save.grid(row=8, column=0, columnspan=2, sticky=SE)
             print("router")
         else:
@@ -203,16 +249,9 @@ def add_device():
     window.mainloop()
 ##########################LINK FORM###################################################
 
-
 def add_combo(lista, combo):
     for i in lista:
         combo['values'] += (i.name,)
-
-def findName(name, lista):
-    for i in lista:
-        if i.name == name:
-
-            print("trovato")
 
 
 def chosingVar(first, second):
@@ -225,13 +264,6 @@ def chosingVar(first, second):
             print("ciao a tutti ")
             print("link di "+i.name+" = ")
             print(i.link)
-
-
-
-
-
-
-
 
 
 def add_link():
@@ -279,8 +311,11 @@ def add_link():
 
 
 def create_net():
-    #CREARE I FILE SH E IL VAGRANTFILE
-    print("ciao")
+
+    write_sh()
+    write_vagrant()
+
+
 
 
 btn_add = Button(root, text="Add Device", width=25, command=add_device)
