@@ -30,7 +30,7 @@ def write_sh():
                     "sudo apt install -y curl\n")
 
             c = 8
-            for i in i.interface.items():     # genera tuple: x[0] == IP x[1] == MASK
+            for i in x.interface.items():     # genera tuple: x[0] == IP x[1] == MASK
                 if i[0] != '':
                     f.write("sudo ip addr add " + i[0] + "/" + str(mask_in_slash(i[1])) + " dev enp0s"+str(c)+"\n"
                             "sudo ip link set enp0s"+str(c)+" up\n")
