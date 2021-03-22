@@ -9,7 +9,25 @@ def write_sh():
                     "sudo apt install -y curl\n"
                     "sudo ip addr add " + x.ip + "/" + str(mask_in_slash(x.mask)) + " dev enp0s8\n"
                     "sudo ip link set enp0s8 up\n"
-                    "sudo ip route add default via "+x.gateway)
+                    "sudo ip route add default via "+x.gateway+"\n")
+
+            #aggiunta di servizi se scelti nella form
+            if x.service != "0":
+                f.write("sudo apt-get update\n"
+                        "sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common\n"
+                        "sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -\n"
+                        "sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\"\n"
+                        "sudo apt-get update\n"
+                        "sudo apt-get install -y docker-ce docker-ce-cli containerd.io\n")
+
+                if x.service == 1:  # HTTP
+                    f.write("sudo docker pull dustnic82/nginx-test\n"
+                            "sudo docker run -d -p 80:80 dustnic82/nginx-test\n")
+
+                if x.service == 2:  # FTP
+                    f.write("docker pull panubo/vsftpd\n"
+                            "docker run --rm -it -p 21:21 -p 4559-4564:4559-4564 -e FTP_USER=ftp -e FTP_PASSWORD=ftp\n")
+
             f.close()
 
         if isinstance(x, Switch):

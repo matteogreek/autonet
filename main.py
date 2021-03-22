@@ -13,7 +13,7 @@ root.geometry("200x200")
 def add_device():
     window = Toplevel(root)
     window.title("Add Device")
-    window.geometry("400x400")
+    window.geometry("400x350")
     top_frame = Frame(window)
     top_frame.pack()
 
@@ -32,7 +32,7 @@ def add_device():
     rdb3.pack(anchor=NW, side=LEFT)
 
     frame_add = Frame(window, relief=SUNKEN)
-    frame_add.pack()
+    frame_add.pack(pady=10)
 
     def clear_frame(frame):
         for widget in frame.winfo_children():
@@ -44,51 +44,66 @@ def add_device():
             clear_frame(frame_add)
 
             # add new widgets
-            lbl_host_name = Label(frame_add, text="Name: ").grid(row=0, column=0)
+            lbl_host_name = Label(frame_add, text="Name: ").grid(row=0, column=0, pady=(10,10))
             en_host_name = Entry(frame_add, width=20)
-            en_host_name.grid(row=0, column=1)
+            en_host_name.grid(row=0, column=1, pady=(10,10))
+
             lbl_host_ip = Label(frame_add, text="IP address: ").grid(row=1, column=0)
             en_host_ip = Entry(frame_add, width=20)
             en_host_ip.grid(row=1, column=1)
-            lbl_host_mask = Label(frame_add, text="Netmask: ").grid(row=2, column=0)
+            lbl_host_mask = Label(frame_add, text="Netmask: ").grid(row=2, column=0, pady=(0,10))
             en_host_mask = Entry(frame_add, width=20)
-            en_host_mask.grid(row=2, column=1)
-            lbl_host_gate = Label(frame_add, text="Default gateway: ").grid(row=3, column=0)
+            en_host_mask.grid(row=2, column=1, pady=(0,10))
+
+            lbl_host_gate = Label(frame_add, text="Default gateway: ").grid(row=3, column=0, pady=(0,10))
             en_host_gate = Entry(frame_add, width=20)
-            en_host_gate.grid(row=3, column=1)
+            en_host_gate.grid(row=3, column=1, pady=(0,10))
+
+            serv = IntVar()
+            serv.set("0")
+            lbl_services = Label(frame_add, text="Services: (Optional)").grid(row=4, column=0)
+            http = Radiobutton(frame_add, width=10, text="HTTP", variable=serv, value=1)
+            http.grid(row=5, column=0)
+            ftp = Radiobutton(frame_add, width=10, text="FTP", variable=serv, value=2)
+            ftp.grid(row=5, column=1)
 
             btn_save = Button(frame_add, text="Save", width=25, command=lambda: new_host(en_host_name.get(),
                                                                                          en_host_ip.get(),
                                                                                          en_host_mask.get(),
-                                                                                         en_host_gate.get()))
-            btn_save.grid(row=4, column=0, columnspan=2, sticky=SE)
+                                                                                         en_host_gate.get(),
+                                                                                         serv.get()))
+            btn_save.grid(row=6, column=0, columnspan=2, sticky=SE, pady=30)
 
         elif value == 2:
             # clear frame
             clear_frame(frame_add)
 
-            lbl_router_name = Label(frame_add, text="Name: ").grid(row=0, column=0)
+            lbl_router_name = Label(frame_add, text="Name: ").grid(row=0, column=0, pady=(0,10))
             en_router_name = Entry(frame_add, width=20)
-            en_router_name.grid(row=0, column=1)
-            # max 3 network interfaces per router
+            en_router_name.grid(row=0, column=1, pady=(0,10))
             lbl_router_ip1 = Label(frame_add, text="IP address: ").grid(row=1, column=0)
             en_router_ip1 = Entry(frame_add, width=20)
             en_router_ip1.grid(row=1, column=1)
-            lbl_router_mask1 = Label(frame_add, text="Netmask: ").grid(row=2, column=0)
+            lbl_router_mask1 = Label(frame_add, text="Netmask: ").grid(row=2, column=0, pady=(0,10))
             en_router_mask1 = Entry(frame_add, width=20)
-            en_router_mask1.grid(row=2, column=1)
-            lbl_router_ip2 = Label(frame_add, text="IP address: ").grid(row=3, column=0)
+            en_router_mask1.grid(row=2, column=1, pady=(0,10))
+
+            # max 3 network interfaces per router
+
+            lbl_optional2 = Label(frame_add, text="Additional interfaces").grid(row=3, column=0, columnspan=2, pady=(0,5))
+            lbl_router_ip2 = Label(frame_add, text="IP address: ").grid(row=4, column=0)
             en_router_ip2 = Entry(frame_add, width=20)
-            en_router_ip2.grid(row=3, column=1)
-            lbl_router_mask2 = Label(frame_add, text="Netmask: ").grid(row=4, column=0)
+            en_router_ip2.grid(row=4, column=1)
+            lbl_router_mask2 = Label(frame_add, text="Netmask: ").grid(row=5, column=0, pady=(0,10))
             en_router_mask2 = Entry(frame_add, width=20)
-            en_router_mask2.grid(row=4, column=1)
-            lbl_router_ip3 = Label(frame_add, text="IP address: ").grid(row=5, column=0)
+            en_router_mask2.grid(row=5, column=1, pady=(0,10))
+
+            lbl_router_ip3 = Label(frame_add, text="IP address: ").grid(row=6, column=0)
             en_router_ip3 = Entry(frame_add, width=20)
-            en_router_ip3.grid(row=5, column=1)
-            lbl_router_mask3 = Label(frame_add, text="Netmask: ").grid(row=6, column=0)
+            en_router_ip3.grid(row=6, column=1)
+            lbl_router_mask3 = Label(frame_add, text="Netmask: ").grid(row=7, column=0)
             en_router_mask3 = Entry(frame_add, width=20)
-            en_router_mask3.grid(row=6, column=1)
+            en_router_mask3.grid(row=7, column=1)
 
             btn_save = Button(frame_add, text="Save", width=25, command=lambda: new_router(en_router_name.get(),
                                                                                            en_router_ip1.get(),
@@ -97,19 +112,21 @@ def add_device():
                                                                                            en_router_mask2.get(),
                                                                                            en_router_ip3.get(),
                                                                                            en_router_mask3.get()))
-            btn_save.grid(row=7, column=0, columnspan=2, sticky=SE)
+            btn_save.grid(row=8, column=0, columnspan=2, sticky=SE, pady=(10,0))
 
         else:
             # clear frame
             clear_frame(frame_add)
 
-            lbl_switch_name = Label(frame_add, text="Name: ").grid(row=0, column=0)
+            lbl_switch_name = Label(frame_add, text="Name: ").grid(row=0, column=0, pady=(30,20))
             en_switch_name = Entry(frame_add, width=20)
-            en_switch_name.grid(row=0, column=1)
+            en_switch_name.grid(row=0, column=1, pady=(30,20))
 
             btn_save = Button(frame_add, text="Save", width=25, command=lambda: new_switch(en_switch_name.get()))
-            btn_save.grid(row=1, column=0, columnspan=2, sticky=SE)
+            btn_save.grid(row=1, column=0, columnspan=2, sticky=SE )
 
+    btn_exit = Button(window, text="Exit", width=10, command=window.destroy)
+    btn_exit.pack(anchor=SE, side=BOTTOM)
     window.mainloop()
 
 # #########################LINK FORM###################################################
@@ -139,7 +156,10 @@ def add_link():
     combobox_second.grid(row=2, column=1, padx=(5, 5))
 
     btn_linking = Button(window, text="Create link", width=10, command=lambda: chosingVar(first, second))
-    btn_linking.grid(row=3, column=2, sticky='se')
+    btn_linking.grid(row=2, column=2)
+
+    btn_exit = Button(window, text="Exit", width=10, command=window.destroy)
+    btn_exit.grid(row=3, column=2, pady=100)
 
     window.mainloop()
 

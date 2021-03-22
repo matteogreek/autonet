@@ -6,12 +6,13 @@ device_list = []
 
 @dataclass
 class Host:
-    def __init__(self, name, ip, mask, gateway):
+    def __init__(self, name, ip, mask, gateway, service):
         self.name = name
         self.ip = ip
         self.mask = mask
         self.gateway = gateway
         self.link = []
+        self.service = service
 
     def __str__(self):
         return self.name
@@ -38,10 +39,10 @@ class Switch:
         return self.name
 
 
-def new_host(name, ip, mask, gate):
+def new_host(name, ip, mask, gate, serv):
 
-    h = Host(name, ip, mask, gate)
-
+    h = Host(name, ip, mask, gate, serv)
+    print(h.name + " " + h.ip + " " + h.mask + " " + h.gateway + " " + str(h.service))
     trovato = False
     for i in device_list:
         if name == i.name or ip == i.ip:
@@ -82,6 +83,8 @@ def mask_in_slash(netmask):
 
 
 def chosingVar(first, second):
+    # da sistemare, se seleziono come primo dispositivo uno switch o un router
+    # si creano più collegamenti con lo stesso nome. Errore
     h = first.get()
     s = second.get()
 
@@ -100,3 +103,5 @@ def destroy_net():
     else:
         delete_sh = os.system("find . -type f -iname *.sh -delete")
         print("cd ~ ran with exit code %d" % delete_sh)
+
+
