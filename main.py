@@ -167,6 +167,7 @@ def add_link():
 def create_net():
     write_sh()
     write_vagrant()
+    launch_vagrant()
 
 # ############################################################################
 

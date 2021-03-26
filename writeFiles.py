@@ -12,7 +12,7 @@ def write_sh():
                     "sudo ip route add default via "+x.gateway+"\n")
 
             #aggiunta di servizi se scelti nella form
-            if x.service != "0":
+            if x.service != 0:
                 f.write("sudo apt-get update\n"
                         "sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common\n"
                         "sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -\n"

@@ -97,11 +97,19 @@ def chosingVar(first, second):
 
 
 def destroy_net():
-    if os.name == 'nt':
+    if os.name == 'nt':     # Windows
         delete_sh = os.system("del \"*.sh\" /s /f /q")
-        print("cd ~ ran with exit code %d" % delete_sh)
-    else:
+        print("delete ran with exit code %d" % delete_sh)
+    else:                   # Linux
         delete_sh = os.system("find . -type f -iname *.sh -delete")
-        print("cd ~ ran with exit code %d" % delete_sh)
+        print("delete ran with exit code %d" % delete_sh)
 
 
+def launch_vagrant():
+    launch = os.system("vagrant up")
+    print("vagrant up ran with exit code %d" % launch)
+
+    if launch == 0:
+        print("Checking status of machines:\n")
+        status = os.system("vagrant status")
+        print("vagrant status ran with exit code %d" % status)
