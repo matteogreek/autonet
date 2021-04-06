@@ -123,7 +123,7 @@ def add_device():
             en_switch_name.grid(row=0, column=1, pady=(30,20))
 
             btn_save = Button(frame_add, text="Save", width=25, command=lambda: new_switch(en_switch_name.get()))
-            btn_save.grid(row=1, column=0, columnspan=2, sticky=SE )
+            btn_save.grid(row=1, column=0, columnspan=2, sticky=SE)
 
     btn_exit = Button(window, text="Exit", width=10, command=window.destroy)
     btn_exit.pack(anchor=SE, side=BOTTOM)

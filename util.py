@@ -2,6 +2,7 @@ from dataclasses import dataclass
 import os
 
 device_list = []
+c = 0
 
 
 @dataclass
@@ -45,9 +46,10 @@ def new_host(name, ip, mask, gate, serv):
     print(h.name + " " + h.ip + " " + h.mask + " " + h.gateway + " " + str(h.service))
     trovato = False
     for i in device_list:
-        if name == i.name or ip == i.ip:
-            print("esiste già")
-            trovato = True
+        if isinstance(i, Host):
+            if name == i.name or ip == i.ip:
+                print("esiste già")
+                trovato = True
     if not trovato:
         device_list.append(h)
 
@@ -85,15 +87,18 @@ def mask_in_slash(netmask):
 def chosingVar(first, second):
     # da sistemare, se seleziono come primo dispositivo uno switch o un router
     # si creano più collegamenti con lo stesso nome. Errore
-    h = first.get()
+    f = first.get()
     s = second.get()
-
     for i in device_list:
-        if i.name == h or i.name == s:
-            i.link.append("broadcast_"+h)
-            print("ciao a tutti ")
+        global c
+        if i.name == f:
+            i.link.append("broadcast_" + f + "_" + str(c))
             print("link di "+i.name+" = ")
             print(i.link)
+            for j in device_list:
+                if j.name == s:
+                    j.link.append("broadcast_" + f + "_" + str(c))
+                    c = c + 1
 
 
 def destroy_net():
