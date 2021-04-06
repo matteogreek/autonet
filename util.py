@@ -85,20 +85,13 @@ def mask_in_slash(netmask):
 
 
 def chosingVar(first, second):
-    # da sistemare, se seleziono come primo dispositivo uno switch o un router
-    # si creano più collegamenti con lo stesso nome. Errore
     f = first.get()
     s = second.get()
     for i in device_list:
-        global c
-        if i.name == f:
-            i.link.append("broadcast_" + f + "_" + str(c))
+        if i.name == f or i.name == s:
+            i.link.append("broadcast_" + f + "_" + s)
             print("link di "+i.name+" = ")
             print(i.link)
-            for j in device_list:
-                if j.name == s:
-                    j.link.append("broadcast_" + f + "_" + str(c))
-                    c = c + 1
 
 
 def destroy_net():
@@ -111,10 +104,11 @@ def destroy_net():
 
 
 def launch_vagrant():
-    launch = os.system("vagrant up")
+    # popen o system?
+    launch = os.popen("vagrant up")
     print("vagrant up ran with exit code %d" % launch)
 
     if launch == 0:
         print("Checking status of machines:\n")
-        status = os.system("vagrant status")
+        status = os.popen("vagrant status")
         print("vagrant status ran with exit code %d" % status)
