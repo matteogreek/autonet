@@ -5,10 +5,9 @@ from writeFiles import *
 
 root = Tk()
 root.title("AutoNet")
-root.geometry("200x200")
+root.geometry("480x200")
 
 # #########################DEVICE FORM###################################################
-
 
 def add_device():
     window = Toplevel(root)
@@ -172,14 +171,42 @@ def create_net():
 # ############################################################################
 
 
+def show_topo():
+    window = Toplevel(root)
+    window.title("Show Topology")
+    window.geometry("1000x700")
+
+    show_tree(window)
+
+    window.mainloop()
+
+
+# ############################################################################
+
+lbl_step1 = Label(root, width=40, text="Step-1: Add Devices to create the network", anchor="w")
+lbl_step1.grid(row=0, column=0, pady=10)
 btn_add = Button(root, text="Add Device", width=25, command=add_device)
-btn_add.pack()
+btn_add.grid(row=0, column=1, columnspan=2)
+
+lbl_step2 = Label(root, width=40, text="Step-2: Create link between devices", anchor="w")
+lbl_step2.grid(row=1, column=0, pady=10)
 btn_link_form = Button(root, text="Create Link", width=25, command=add_link)
-btn_link_form.pack()
+btn_link_form.grid(row=1, column=1, columnspan=2)
+
+lbl_step3 = Label(root, width=40, text="Step-3: Check the created topology",anchor="w")
+lbl_step3.grid(row=2, column=0, pady=10)
+btn_show_net = Button(root, text="Show topology", width=25, command=show_topo)
+btn_show_net.grid(row=2, column=1, columnspan=2)
+
+lbl_step4 = Label(root, width=40, text="Step-4: Create and Run the network", anchor="w")
+lbl_step4.grid(row=3, column=0, pady=10)
 btn_create = Button(root, text="Create & Run", width=25, command=create_net)
-btn_create.pack()
+btn_create.grid(row=3, column=1, columnspan=2)
+
+lbl_step5 = Label(root, width=40, text="Step-5: Delete configuration files", anchor="w")
+lbl_step5.grid(row=4, column=0, pady=10)
 btn_destroy = Button(root, text="Destroy", width=25, command=destroy_net)
-btn_destroy.pack()
+btn_destroy.grid(row=4, column=1, columnspan=1)
 
 root.mainloop()
 
