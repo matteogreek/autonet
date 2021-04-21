@@ -58,12 +58,14 @@ def add_device():
             en_host_gate = Entry(frame_add, width=20)
             en_host_gate.grid(row=3, column=1, pady=(0,10))
 
+
             serv = IntVar()
             serv.set("0")
+
             lbl_services = Label(frame_add, text="Services: (Optional)").grid(row=4, column=0)
-            http = Radiobutton(frame_add, width=10, text="HTTP", variable=serv, value=1)
+            http = Checkbutton(frame_add, text='HTTP', variable=serv, onvalue=1, offvalue=0)
             http.grid(row=5, column=0)
-            ftp = Radiobutton(frame_add, width=10, text="FTP", variable=serv, value=2)
+            ftp = Checkbutton(frame_add, text='FTP', variable=serv, onvalue=2, offvalue=0)
             ftp.grid(row=5, column=1)
 
             btn_save = Button(frame_add, text="Save", width=25, command=lambda: new_host(en_host_name.get(),
