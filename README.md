@@ -4,7 +4,8 @@ This is an academic project for the second part of the Design of Networks and Co
 ## What is Autonet
 Autonet is a Visual interface to pre-configure and run a network of VMs/containers and OpenVSwitches with the aim of automating the deployment of network setups.
 The GUI of the App is done using **Tkinter** which is Python de-facto standard GUI package.
-##Our Goal
+
+## Our Goal
 Our goal is to create an application that allows the user to preconfigure and run a network of VMs.
 To achieve this we have developed an application that relies on Vagrant to create, configure and run the virtual machines.
 
