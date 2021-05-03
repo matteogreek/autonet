@@ -1,14 +1,14 @@
-#Autonet
+# Autonet
 This is an academic project for the second part of the Design of Networks and Communication Systems course at the University of Trento, taught by Prof. Fabrizio Granelli.
 
-##What is Autonet
+## What is Autonet
 Autonet is a Visual interface to pre-configure and run a network of VMs/containers and OpenVSwitches with the aim of automating the deployment of network setups.
 The GUI of the App is done using **Tkinter** which is Python de-facto standard GUI package.
 ##Our Goal
 Our goal is to create an application that allows the user to preconfigure and run a network of VMs.
 To achieve this we have developed an application that relies on Vagrant to create, configure and run the virtual machines.
 
-##5 Steps
+## 5 Steps
 1. Device Configuration
 2. Device Linking 
 3. Show structure of the created network
@@ -63,7 +63,7 @@ def write_sh():
                     "sudo ip link set enp0s8 up\n"
                     "sudo ip route add default via "+x.gateway+"\n")
 ```
-##VagrantFile
+## VagrantFile
 The primary function of the Vagrantfile is to describe the type of machine required for a project, and how to configure and provision these machines.
 ```
   config.vm.define "host1" do |host1|
@@ -76,7 +76,7 @@ The primary function of the Vagrantfile is to describe the type of machine requi
     end
   end
 ```
-##Create&Run
+## Create&Run
 * When the *Create&Run* button is pressed: 
 	1. All the bash scripts and the VagrantFile are created 
 	2. **Vagrant up** and **Vagrant status** are executed
