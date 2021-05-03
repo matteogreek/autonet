@@ -84,4 +84,8 @@ The primary function of the Vagrantfile is to describe the type of machine requi
 
 * When the command **Vagrant up** ends the network is up and running!
 
+## Slides
+You can find the presentation slides in [pdf/slides.pdf](pdf/slides.pdf).
+
+## Team
 Made with :coffee: & :heart: by Matteo Greco, Emanuele Boscari, Thomas Dalla Via.
